@@ -2,6 +2,7 @@ package main.model;
 
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table
@@ -12,23 +13,27 @@ public class User {
 
     private String name;
     private String password;
-//
-//
-//    @Column
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "users_role",
-//            joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
-//    )
-//    private Set<Role> userRoles;
 
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> userRoles;
+
+    public Set<Role> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<Role> userRoles) {
+        this.userRoles = userRoles;
+    }
 
     public User() {
     }
 
-    public User(String name, String password) {
+    public User(String name, String password, Set<Role> userRoles) {
         this.name = name;
         this.password = password;
+        this.userRoles = userRoles;
     }
 
     public Long getId() {
@@ -61,6 +66,7 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
+                ", userRoles=" + userRoles +
                 '}';
     }
 }
