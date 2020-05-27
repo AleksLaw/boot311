@@ -37,16 +37,15 @@
         Role<br>
         <div class="select" style="width:225px;" align="center">
             <select name="role" multiple size="2" style="width: 225px; ">
-
                 <option> ADMIN</option>
                 <option selected> USER</option>
             </select>
         </div>
         <br>
+
         <table>
             <input class="cellbut3" type="button" value="Close" onClick='location.href="/adminPage"'/>
             <input class="cellbut1" type="submit" value="Add">
-<!--            <input type="hidden" name="id" value="1">-->
             <form th:action="@{/logout}" method="post">
                 <input class="cellbut3" type="submit" value="Logout"/>
             </form>

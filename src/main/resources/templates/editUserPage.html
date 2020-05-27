@@ -32,11 +32,11 @@
 <div align="center">
     <table align="center">
         <tbody>
+        <h2 align="center">Edit user</h2>
         <form method="post" action="/edit">
-            <h2 align="center">Edit user</h2>
             <tr th:each="user : ${listUsers}">
                 Id<br>
-                <input size="30" disabled th:placeholder="${user.id} " > <br>
+                <input size="30" disabled th:placeholder="${user.id} "> <br>
                 Name<br>
                 <input size="30" th:placeholder="${user.name} " th:name="name" th:value="${user.name}"> <br>
                 Password<br>
@@ -51,27 +51,17 @@
 
                 <form>
                     <input type="hidden" name="id" th:value="${user.id}">
-
             <tr>
-                <input class="cellbut2" type="button" value="Close" onClick='location.href="/adminPageInfo"'/>
-                <input class="cellbut1"
-                       type="submit"
-                       value="Edit">
-
-                <form action="/logout" method="post">
-                    <input type="hidden"
-                           name="${_csrf.parameterName}"
-                           value="${_csrf.token}"/>
-                    <input class="cellbut3" type="submit" value="Logout">
+                <input class="cellbut2" type="button" value="Close" onClick='location.href="/adminPage"'/>
+                <input class="cellbut1" type="submit" value="Edit">
+                <form  th:action="@{/logout}" method="post">
+                    <input class="cellbut2" type="submit" value="Logout"/>
                 </form>
             </tr>
         </form>
         </tbody>
     </table>
 </div>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
 </body>
 </html>
 

@@ -46,26 +46,21 @@
     </thead>
     <tbody>
     <tr th:each="user : ${listUsers}">
-        <td th:disabled="" th:text="${user.id}">Product ID</td>
-        <td th:disabled="" th:text="${user.name}">Name</td>
-        <td th:disabled="" th:text="${user.password}">Brand</td>
-        <td th:disabled="" th:text="${user.userRoles}">Made in</td>
+        <!--/*@thymesVar id="id" type="User.class"*/-->
+
+        <td  th:text="${user.id}">Product ID</td>
+        <td  th:text="${user.name}">Name</td>
+        <td  th:text="${user.password}">Brand</td>
+        <td  th:text="${user.userRoles}">Made in</td>
 
     </tr>
     </tbody>
 </table>
-
 <div align="center">
-    <form action="/logout" method="post">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <input class="cellbut4" type="submit" value="Logout">
+    <form th:action="@{/logout}" method="post">
+        <input class="cellbut3" type="submit" value="Logout"/>
     </form>
 </div>
-
-
 </body>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
 </html>
 
