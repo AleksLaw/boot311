@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
-<html xmlns:tm="http://www.w3.org/1999/html" xmlns:th="http://www.w3.org/1999/html">
+<html xmlns:tm="http://www.w3.org/1999/html"
+      xmlns:th="http://www.w3.org/1999/html">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>addUserPage</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style type="text/css">
         .cellbut1 {
@@ -41,18 +42,17 @@
                 <option selected> USER</option>
             </select>
         </div>
+        <br>
         <table>
-            <input class="cellbut3" type="button" value="Close" onClick='location.href="/adminPageInfo"'/>
+            <input class="cellbut3" type="button" value="Close" onClick='location.href="/adminPage"'/>
             <input class="cellbut1" type="submit" value="Add">
-            <input type="hidden" name="id" value="1">
-            <form action="/logout" method="post">
-                <input type="hidden"
-                       name="${_csrf.parameterName}"
-                       value="${_csrf.token}"/>
-                <input class="cellbut3" type="submit" value="Logout">
+<!--            <input type="hidden" name="id" value="1">-->
+            <form th:action="@{/logout}" method="post">
+                <input class="cellbut3" type="submit" value="Logout"/>
             </form>
         </table>
     </form>
 </div>
+
 </body>
 </html>

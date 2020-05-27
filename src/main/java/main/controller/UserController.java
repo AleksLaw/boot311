@@ -7,9 +7,7 @@ import main.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
@@ -19,9 +17,21 @@ public class UserController {
     @Autowired
     private UserRepo userRepo;
 
-    @GetMapping("/adminPageInfo")
-    public ModelAndView listUsers() {
+    @GetMapping("/")
+    public String greeting() {
+        return "hello";
+    }
 
+
+    @GetMapping("/adminPage")
+    public ModelAndView listUsers() {
+        Iterable<User> list = userRepo.findAll();
+        ModelAndView modelAndView = new ModelAndView("adminPage");
+        modelAndView.getModelMap().addAttribute("listUsers", list);
+        return modelAndView;
+    }
+    @PostMapping ("/adminPage")
+    public ModelAndView viewAdminPage() {
         Iterable<User> list = userRepo.findAll();
         ModelAndView modelAndView = new ModelAndView("adminPage");
         modelAndView.getModelMap().addAttribute("listUsers", list);
@@ -33,7 +43,7 @@ public class UserController {
         return "addUserPage";
     }
 
-    @PostMapping("add")
+    @PostMapping("/add")
     public String addUser(User user, @RequestParam("role") String role) {
         Set<Role> userRoles = getRoles(role);
         User userNew = new User();
@@ -41,10 +51,10 @@ public class UserController {
         userNew.setName(user.getName());
         userNew.setPassword(user.getPassword());
         userRepo.save(userNew);
-        return "redirect:/adminPageInfo";
+        return "redirect:/adminPage";
     }
 
-    @PostMapping("/editUserPage")
+    @GetMapping("/editUserPage")
     public ModelAndView viewEditPage(@RequestParam("id") Long id) {
         Iterable<User> list = userRepo.findAllById(Collections.singleton(id));
         ModelAndView modelAndView = new ModelAndView("editUserPage");
@@ -53,22 +63,23 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public String updateUser(User user, @RequestParam("role") String role) {
+    public String editUser(User user, @RequestParam("role") String role) {
         User byId = userRepo.findById(user.getId()).get();
         Set<Role> userRoles = getRoles(role);
         byId.setUserRoles(userRoles);
         byId.setName(user.getName());
         byId.setPassword(user.getPassword());
         userRepo.save(byId);
-        return "redirect:/adminPageInfo";
+        return "adminPage";
     }
+
     @PostMapping("/delete")
     public String delUser(@RequestParam("id") Long id) {
         userRepo.deleteById(id);
-        return "redirect:/adminPageInfo";
+        return "adminPage";
     }
 
-    @PostMapping("/delUserPage")
+    @GetMapping("/delUserPage")
     public ModelAndView viewDelPage(@RequestParam("id") Long id) {
         Iterable<User> list = userRepo.findAllById(Collections.singleton(id));
         ModelAndView modelAndView = new ModelAndView("delUserPage");
@@ -76,22 +87,25 @@ public class UserController {
         return modelAndView;
     }
 
-    @GetMapping("/")
-    public String greeting(
-            @RequestParam(name = "name", required = false, defaultValue = "World") String name,
-            Model model
-    ) {
-        model.addAttribute("name", name);
-        return "greeting";
+
+    @RequestMapping(value = "/userPageInfo", method = RequestMethod.GET)
+    public ModelAndView printWelcome() {
+        Iterable<User> list = userRepo.findAll();
+        ModelAndView modelAndView = new ModelAndView("userPageInfo");
+        modelAndView.getModelMap().addAttribute("listUsers", list);
+        return modelAndView;
     }
 
     private Set<Role> getRoles(@RequestParam("role") String role) {
         Set<Role> userRoles = new HashSet<>();
         String[] split = role.split(",");
-        Role ss = Role.valueOf(split[0]);
         for (String s : split) {
             userRoles.add(Role.valueOf(s));
         }
         return userRoles;
     }
+//    @GetMapping("login")
+//    public String login() {
+//        return "adminPage";
+//    }
 }

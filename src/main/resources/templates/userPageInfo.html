@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>userPageInfo</title>
+    <style type="text/css">
+        table {
+            border: 1px solid black;
+            width: 610px;
+        }
+
+        tr {
+            height: 15px;
+        }
+
+        th {
+            border: 1px solid black
+        }
+
+        td {
+            align-content: center;
+            border: 1px solid black
+        }
+
+        .cellbut4 {
+            width: 610px;
+            margin-bottom: 1px;
+            height: min-content;
+            background: darkgrey; /* Серый цвет фона для изменения*/
+            color: white; /* Белые буквы */
+            font-size: 12pt; /* Размер шрифта в пунктах */
+        }
+    </style>
+</head>
+<body>
+
+<table align="center">
+    <h1 align="center">User information page</h1>
+    <thead>
+    <h3 align="center">User info</h3>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Password</th>
+        <th>Roles</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${listUsers}">
+        <td th:disabled="" th:text="${user.id}">Product ID</td>
+        <td th:disabled="" th:text="${user.name}">Name</td>
+        <td th:disabled="" th:text="${user.password}">Brand</td>
+        <td th:disabled="" th:text="${user.userRoles}">Made in</td>
+
+    </tr>
+    </tbody>
+</table>
+
+<div align="center">
+    <form action="/logout" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input class="cellbut4" type="submit" value="Logout">
+    </form>
+</div>
+
+
+</body>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+</html>
+
