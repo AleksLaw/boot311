@@ -1,7 +1,5 @@
 package main.config;
 
-//import main.model.User;
-
 import main.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
