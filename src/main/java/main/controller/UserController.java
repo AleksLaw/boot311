@@ -125,14 +125,15 @@ public class UserController {
     private String showRegisterPage() {
         return "reg";
     }
+
     @PostMapping("/reg")
-    private String showRegisterPageByAddNewUser(User user, Map<String,Object> model) {
+    private String showRegisterPageByAddNewUser(User user, Map<String, Object> model) {
         User byName = userRepo.findByName(user.getName());
         if (byName != null) {
             model.put("message", "This isn't new User");
             return "reg";
         }
-user.setUserRoles(Collections.singleton(Role.ADMIN));
+        user.setUserRoles(Collections.singleton(Role.ADMIN));
         userRepo.save(user);
         return "redirect:/login";
     }
