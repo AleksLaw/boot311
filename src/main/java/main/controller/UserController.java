@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Controller
@@ -119,4 +120,21 @@ public class UserController {
         }
         return userRoles;
     }
+
+    @GetMapping("/reg")
+    private String showRegisterPage() {
+        return "reg";
+    }
+    @PostMapping("/reg")
+    private String showRegisterPageByAddNewUser(User user, Map<String,Object> model) {
+        User byName = userRepo.findByName(user.getName());
+        if (byName != null) {
+            model.put("message", "This isn't new User");
+            return "reg";
+        }
+user.setUserRoles(Collections.singleton(Role.ADMIN));
+        userRepo.save(user);
+        return "redirect:/login";
+    }
+
 }
