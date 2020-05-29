@@ -2,34 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>userPageInfo</title>
-    <style type="text/css">
-        table {
-            border: 1px solid black;
-            width: 610px;
-        }
+    <link rel="stylesheet" href="/css/style.css" type="text/css" >
 
-        tr {
-            height: 15px;
-        }
-
-        th {
-            border: 1px solid black
-        }
-
-        td {
-            align-content: center;
-            border: 1px solid black
-        }
-
-        .cellbut4 {
-            width: 610px;
-            margin-bottom: 1px;
-            height: min-content;
-            background: darkgrey; /* Серый цвет фона для изменения*/
-            color: white; /* Белые буквы */
-            font-size: 12pt; /* Размер шрифта в пунктах */
-        }
-    </style>
 </head>
 <body>
 
@@ -46,7 +20,6 @@
     </thead>
     <tbody>
     <tr th:each="user : ${listUsers}">
-        <!--/*@thymesVar id="id" type="User.class"*/-->
 
         <td  th:text="${user.id}">Product ID</td>
         <td  th:text="${user.name}">Name</td>
@@ -58,7 +31,7 @@
 </table>
 <div align="center">
     <form th:action="@{/logout}" method="post">
-        <input class="cellbut3" type="submit" value="Logout"/>
+        <input class="logout" type="submit" value="Logout"/>
     </form>
 </div>
 </body>

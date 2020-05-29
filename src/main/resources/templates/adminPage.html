@@ -1,66 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>adminPage</title>
-    <style type="text/css">
-        table {
-            border: 1px solid black;
-            width: 610px;
-        }
-
-        tr {
-            height: 15px;
-        }
-
-        th {
-            border: 1px solid black
-        }
-
-        td {
-            align-content: center;
-            border: 1px solid black
-        }
-
-        .cellbut1 {
-            width: 100%;
-            height: min-content;
-            background: firebrick; /* Красный цвет фона для удаления*/
-            color: white; /* Белые буквы */
-            font-size: 12pt; /* Размер шрифта в пунктах */
-        }
-
-        .cellbut2 {
-            width: 100%;
-            height: min-content;
-            background: cornflowerblue; /* Синий цвет фона для изменения*/
-            color: white; /* Белые буквы */
-            font-size: 12pt; /* Размер шрифта в пунктах */
-        }
-
-        .cellbut3 {
-            width: 610px;
-            margin-bottom: 1px;
-            height: min-content;
-            background: darkgreen; /* Зеленый цвет фона для добавления */
-            color: white; /* Белые буквы */
-            font-size: 12pt; /* Размер шрифта в пунктах */
-        }
-
-        .cellbut4 {
-            width: 610px;
-            margin-bottom: 1px;
-            height: min-content;
-            background: darkgrey; /* Серый цвет фона для изменения*/
-            color: white; /* Белые буквы */
-            font-size: 12pt; /* Размер шрифта в пунктах */
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css" type="text/css" >
 </head>
 <body>
 <table align="center">
     <h1 align="center">Admin panel</h1>
     <thead>
-    <h3 align="center">User table</h3>
+    <h2 align="center">User table</h2>
     <tr>
         <th>ID</th>
         <th>Name</th>
@@ -77,13 +24,13 @@
         <td th:text="${user.password}">Brand</td>
         <td th:text="${user.userRoles}">Made in</td>
         <td>
-            <form th:action="@{/editUserPage}" method="post">
+            <form th:action="@{/admin/editUserPage}" method="post">
                 <input type="hidden" name="id" th:value="${user.id}">
                 <input class="cellbut2" type="submit" value="Edit">
             </form>
         </td>
         <td>
-            <form th:action="@{/delUserPage}" method="post">
+            <form th:action="@{/admin/delUserPage}" method="post">
                 <input type="hidden" name="id" th:value="${user.id}">
                 <input class="cellbut1" type="submit" value="Delete">
             </form>
@@ -93,10 +40,10 @@
 </table>
 <div align="center">
 
-    <form style="margin: 1px" method="get" action="/userPageInfo">
+    <form style="margin: 1px" method="get" action="/user/userPageInfo">
         <input class="cellbut4" type="submit" value="User page">
     </form>
-    <form style="margin: 1px" method="get" action="/addUserPage">
+    <form style="margin: 1px" method="get" action="/admin/addUserPage">
         <input class="cellbut3" type="submit" value="Add">
     </form>
     <form th:action="@{/logout}" method="post">

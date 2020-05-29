@@ -2,38 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>delUserPage</title>
-    <style type="text/css">
-        .cellbut1 {
-            width: 75px;
-            height: min-content;
-            background: firebrick; /* Красный цвет фона для удаления*/
-            color: white; /* Белые буквы */
-            font-size: 12pt; /* Размер шрифта в пунктах */
-        }
-
-        .cellbut2 {
-            width: 75px;
-            height: min-content;
-            background: darkgrey; /* Серый цвет фона для изменения*/
-            color: white; /* Белые буквы */
-            font-size: 12pt; /* Размер шрифта в пунктах */
-        }
-
-        .cellbut3 {
-            width: 75px;
-            height: min-content;
-            background: darkgrey; /* Серый цвет фона для изменения*/
-            color: white; /* Белые буквы */
-            font-size: 12pt; /* Размер шрифта в пунктах */
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css" type="text/css" >
 </head>
 <body>
 <div align="center">
-    <table align="center">
-        <tbody>
-        <form method="post" action="/delete">
-            <h2 align="center">Delete user</h2>
+
+    <h2 align="center">Delete user</h2>
+        <form method="post" action="/admin/delete">
+
 
             <tr th:each="user : ${listUsers}">
                 Id<br>
@@ -49,18 +25,22 @@
                         <option disabled th:text=" ${user.userRoles}">
                     </select>
                     <br>
-                    <form>
-                        <input type="hidden" name="id" th:value="${user.id}">
-            <tr>
-                <input class="cellbut2" type="button" value="Close" onClick='location.href="/adminPage"'/>
-                <input class="cellbut1" type="submit" value="Delete">
-                <form th:action="@{/logout}" method="post">
-                    <input class="cellbut2" type="submit" value="Logout"/>
-                </form>
-            </tr>
+                    <br>
+
+                </div>
+                <input type="hidden" name="id" th:value="${user.id}">
+                <input class="action" type="submit" value="Delete">
         </form>
-        </tbody>
-    </table>
+    <input class="logoutCancel" type="button" value="Close" onClick='location.href="/admin/adminPage"'/>
+    <form th:action="@{/logout}" method="post">
+        <input class="logoutCancel" type="submit" value="Logout"/>
+    </form>
+
+
+
+
+
+
 </div>
 </body>
 </html>

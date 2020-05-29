@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,7 +38,7 @@ public class UserController {
         return "/hello";
     }
 
-    @GetMapping("/adminPage")
+    @GetMapping("/admin/adminPage")
     public ModelAndView listUsers(User user) {
         Iterable<User> list = userRepo.findAll();
         ModelAndView modelAndView = new ModelAndView("adminPage");
@@ -45,7 +46,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @PostMapping("/adminPage")
+    @PostMapping("/admin/adminPage")
     public ModelAndView viewAdminPage(User user) {
         Iterable<User> list = userRepo.findAll();
         ModelAndView modelAndView = new ModelAndView("adminPage");
@@ -53,12 +54,12 @@ public class UserController {
         return modelAndView;
     }
 
-    @GetMapping("/addUserPage")
+    @GetMapping("/admin/addUserPage")
     public String addUserPage() {
         return "addUserPage";
     }
 
-    @PostMapping("/add")
+    @PostMapping("/admin/add")
     public String addUser(User user, @RequestParam("role") String role) {
         Set<Role> userRoles = getRoles(role);
         User userNew = new User();
@@ -66,10 +67,10 @@ public class UserController {
         userNew.setName(user.getName());
         userNew.setPassword(user.getPassword());
         userRepo.save(userNew);
-        return "redirect:/adminPage";
+        return "redirect:/admin/adminPage";
     }
 
-    @PostMapping("/editUserPage")
+    @PostMapping("/admin/editUserPage")
     public ModelAndView viewEditPage(@RequestParam Long id) {
         Iterable<User> list = userRepo.findAllById(Collections.singleton(id));
         ModelAndView modelAndView = new ModelAndView("editUserPage");
@@ -77,7 +78,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/admin/edit")
     public String editUser(User user, @RequestParam("role") String role) {
         User byId = userRepo.findById(user.getId()).get();
         Set<Role> userRoles = getRoles(role);
@@ -85,16 +86,16 @@ public class UserController {
         byId.setName(user.getName());
         byId.setPassword(user.getPassword());
         userRepo.save(byId);
-        return "redirect:/adminPage";
+        return "redirect:/admin/adminPage";
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/admin/delete")
     public String delUser(@RequestParam("id") Long id) {
         userRepo.deleteById(id);
-        return "redirect:/adminPage";
+        return "redirect:/admin/adminPage";
     }
 
-    @PostMapping("/delUserPage")
+    @PostMapping("/admin/delUserPage")
     public ModelAndView viewDelPage(@RequestParam("id") Long id) {
         Iterable<User> list = userRepo.findAllById(Collections.singleton(id));
         ModelAndView modelAndView = new ModelAndView("delUserPage");
@@ -102,8 +103,17 @@ public class UserController {
         return modelAndView;
     }
 
-    @GetMapping("/userPageInfo")
+    @GetMapping("/user/userPageInfo")
     public ModelAndView printWelcome(User user) {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        User byName = userRepo.findByName(name);
+        Iterable<User> list = userRepo.findAllById(Collections.singleton(byName.getId()));
+        ModelAndView modelAndView = new ModelAndView("userPageInfo");
+        modelAndView.getModelMap().addAttribute("listUsers", list);
+        return modelAndView;
+    }
+    @PostMapping("/user/userPageInfo")
+    public ModelAndView printWelcomeasd(User user) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User byName = userRepo.findByName(name);
         Iterable<User> list = userRepo.findAllById(Collections.singleton(byName.getId()));

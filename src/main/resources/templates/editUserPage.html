@@ -2,65 +2,40 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>editUser</title>
-    <style type="text/css">
-        .cellbut1 {
-            width: 75px;
-            height: min-content;
-            background: firebrick; /* Красный цвет фона для удаления*/
-            color: white; /* Белые буквы */
-            font-size: 12pt; /* Размер шрифта в пунктах */
-        }
-
-        .cellbut2 {
-            width: 75px;
-            height: min-content;
-            background: darkgrey; /* Серый цвет фона для изменения*/
-            color: white; /* Белые буквы */
-            font-size: 12pt; /* Размер шрифта в пунктах */
-        }
-
-        .cellbut3 {
-            width: 75px;
-            height: min-content;
-            background: darkgrey; /* Серый цвет фона для изменения*/
-            color: white; /* Белые буквы */
-            font-size: 12pt; /* Размер шрифта в пунктах */
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css" type="text/css" >
 </head>
 <body>
 <div align="center">
-    <table align="center">
-        <tbody>
-        <h2 align="center">Edit user</h2>
-        <form method="post" action="/edit">
-            <tr th:each="user : ${listUsers}">
-                Id<br>
-                <input size="30" disabled th:placeholder="${user.id} "> <br>
-                Name<br>
-                <input size="30" th:placeholder="${user.name} " th:name="name" th:value="${user.name}"> <br>
-                Password<br>
-                <input size="30" th:placeholder="${user.password} " th:name="password" th:value="${user.password}"> <br>
-                Roles<br>
-                <div class="select" style="width:225px;" align="center">
-                    <select name="role" multiple size="2" style="width: 225px; ">
-                        <option> ADMIN</option>
-                        <option selected> USER</option>
-                    </select>
-                </div>
 
-                <form>
-                    <input type="hidden" name="id" th:value="${user.id}">
-            <tr>
-                <input class="cellbut2" type="button" value="Close" onClick='location.href="/adminPage"'/>
-                <input class="cellbut1" type="submit" value="Edit">
-                <form th:action="@{/logout}" method="post">
-                    <input class="cellbut2" type="submit" value="Logout"/>
-                </form>
-            </tr>
-        </form>
-        </tbody>
-    </table>
+    <h2 align="center">Edit user</h2>
+    <form method="post" action="/admin/edit">
+        <tr th:each="user : ${listUsers}">
+            Id<br>
+            <input size="30" disabled th:placeholder="${user.id} "> <br>
+            Name<br>
+            <input size="30" th:placeholder="${user.name} " th:name="name" th:value="${user.name}"> <br>
+            Password<br>
+            <input size="30" th:placeholder="${user.password} " th:name="password" th:value="${user.password}"> <br>
+            Roles<br>
+            <div class="select" style="width:225px;" align="center">
+                <select name="role" multiple size="2" style="width: 225px; ">
+                    <option> ADMIN</option>
+                    <option selected> USER</option>
+                </select>
+            </div>
+            <br>
+            <input type="hidden" name="id" th:value="${user.id}">
+            <input class="action" type="submit" value="Edit">
+    </form>
+
+    <input class="logoutCancel" type="button" value="Close" onClick='location.href="/admin/adminPage"'/>
+
+
+    <form th:action="@{/logout}" method="post">
+        <input class="logoutCancel" type="submit" value="Logout"/>
+    </form>
+
+
 </div>
 </body>
 </html>
