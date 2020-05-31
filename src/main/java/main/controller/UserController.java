@@ -6,9 +6,9 @@ import main.model.User;
 import main.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,6 +23,10 @@ public class UserController {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
     @GetMapping("/")
     public String greeting() {
         return "hello";
@@ -33,25 +37,9 @@ public class UserController {
         HashSet<Role> roles = new HashSet<>();
         roles.add(Role.ADMIN);
         roles.add(Role.USER);
-        User user = new User("ADMIN", "ADMIN", roles);
+        User user = new User("ADMIN", passwordEncoder.encode("ADMIN"), roles);
         userRepo.save(user);
         return "/hello";
-    }
-
-    @GetMapping("/admin/adminPage")
-    public ModelAndView listUsers(User user) {
-        Iterable<User> list = userRepo.findAll();
-        ModelAndView modelAndView = new ModelAndView("adminPage");
-        modelAndView.getModelMap().addAttribute("listUsers", list);
-        return modelAndView;
-    }
-
-    @PostMapping("/admin/adminPage")
-    public ModelAndView viewAdminPage(User user) {
-        Iterable<User> list = userRepo.findAll();
-        ModelAndView modelAndView = new ModelAndView("adminPage");
-        modelAndView.getModelMap().addAttribute("listUsers", list);
-        return modelAndView;
     }
 
     @GetMapping("/admin/addUserPage")
@@ -65,10 +53,29 @@ public class UserController {
         User userNew = new User();
         userNew.setUserRoles(userRoles);
         userNew.setName(user.getName());
-        userNew.setPassword(user.getPassword());
+        userNew.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(userNew);
         return "redirect:/admin/adminPage";
     }
+
+    @GetMapping("/admin/adminPage")
+    public ModelAndView listUsers(User user) {
+        Iterable<User> list = userRepo.findAll();
+        ModelAndView modelAndView = new ModelAndView("adminPage");
+        modelAndView.getModelMap().addAttribute("listUsers", list);
+        return modelAndView;
+    }
+
+    @PostMapping("/admin/adminPage")
+    public ModelAndView viewAdminPage(User user) {
+
+
+        Iterable<User> list = userRepo.findAll();
+        ModelAndView modelAndView = new ModelAndView("adminPage");
+        modelAndView.getModelMap().addAttribute("listUsers", list);
+        return modelAndView;
+    }
+
 
     @PostMapping("/admin/editUserPage")
     public ModelAndView viewEditPage(@RequestParam Long id) {
@@ -84,7 +91,8 @@ public class UserController {
         Set<Role> userRoles = getRoles(role);
         byId.setUserRoles(userRoles);
         byId.setName(user.getName());
-        byId.setPassword(user.getPassword());
+
+        byId.setPassword(passwordEncoder.encode( user.getPassword()));
         userRepo.save(byId);
         return "redirect:/admin/adminPage";
     }
@@ -112,6 +120,7 @@ public class UserController {
         modelAndView.getModelMap().addAttribute("listUsers", list);
         return modelAndView;
     }
+
     @PostMapping("/user/userPageInfo")
     public ModelAndView printWelcomeasd(User user) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
